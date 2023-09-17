@@ -70,4 +70,4 @@ class DisbursementAgentClass {
   }
 }
 
-export default DisbursementAgentClass;
+export = DisbursementAgentClass;

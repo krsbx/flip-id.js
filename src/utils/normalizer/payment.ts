@@ -1,4 +1,24 @@
-import { Bill } from '../type';
+import { Bill, BillPayment } from '../type';
+
+export function normalizeBillPayment(payment: BillPayment) {
+  return {
+    id: payment.id,
+    amount: payment.amount,
+    uniqueCode: payment.unique_code,
+    status: payment.status,
+    senderBank: payment.sender_bank,
+    senderBankType: payment.sender_bank_type,
+    userAddress: payment.user_address,
+    userPhone: payment.user_phone,
+    createdAt: payment.created_at,
+    receiverBankAccount: {
+      accountNumber: payment.receiver_bank_account.account_number,
+      accountType: payment.receiver_bank_account.account_type,
+      bankCode: payment.receiver_bank_account.bank_code,
+      accountHolder: payment.receiver_bank_account.account_holder,
+    },
+  };
+}
 
 export function normalizeBill(bill: Bill) {
   return {
@@ -15,32 +35,11 @@ export function normalizeBill(bill: Bill) {
     isPhoneNumberRequired: Boolean(bill.is_phone_number_required),
     step: bill.step,
     ...((bill.step === 2 || bill.step === 3) && {
-      customer: {
-        name: bill.customer.name,
-        email: bill.customer.email,
-        phone: bill.customer.phone,
-        address: bill.customer.address,
-      },
+      customer: bill.customer,
     }),
     ...(bill.step === 3 && {
       paymentUrl: bill.payment_url,
-      billPayment: {
-        id: bill.bill_payment.id,
-        amount: bill.bill_payment.amount,
-        uniqueCode: bill.bill_payment.unique_code,
-        status: bill.bill_payment.status,
-        senderBank: bill.bill_payment.sender_bank,
-        senderBankType: bill.bill_payment.sender_bank_type,
-        userAddress: bill.bill_payment.user_address,
-        userPhone: bill.bill_payment.user_phone,
-        createdAt: bill.bill_payment.created_at,
-        receiverBankAccount: {
-          accountNumber: bill.bill_payment.receiver_bank_account.account_number,
-          accountType: bill.bill_payment.receiver_bank_account.account_type,
-          bankCode: bill.bill_payment.receiver_bank_account.bank_code,
-          accountHolder: bill.bill_payment.receiver_bank_account.account_holder,
-        },
-      },
+      billPayment: normalizeBillPayment(bill.bill_payment),
     }),
   };
 }

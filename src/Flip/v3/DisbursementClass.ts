@@ -105,4 +105,4 @@ class DisbursementClass {
   }
 }
 
-export default DisbursementClass;
+export = DisbursementClass;

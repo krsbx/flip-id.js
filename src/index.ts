@@ -51,4 +51,4 @@ class Flip {
   }
 }
 
-export default Flip.instance;
+export = Flip.instance;
