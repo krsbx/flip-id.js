@@ -1,4 +1,4 @@
-import { Disbursement } from './type';
+import { Disbursement } from '../type';
 
 export function normalizeDisbursement(item: Disbursement) {
   return {
@@ -22,7 +22,7 @@ export function normalizeDisbursement(item: Disbursement) {
     direction: item.direction,
     sender: item.sender,
     fee: item.fee,
-    beneficiary_email: item.beneficiary_email.split(','),
+    beneficiaryEmail: item.beneficiary_email.split(','),
     idempotencyKey: item.idempotency_key,
   };
 }

@@ -1,13 +1,18 @@
-import type Flip from '.';
-import axios from './axios';
-import { normalizeDisbursement } from './common';
+import type Flip from '..';
+import axios from '../axios';
+import { normalizeDisbursement } from '../utils/normalizer/disbursement';
+import { createIdempotencyKeyHeader } from '../generator/common';
 import {
-  CreateDisbursementPayload,
-  CreateSpecialDisbursementPayload,
+  createDisbursementRequest,
+  createSpecialDisbursementRequest,
+} from '../generator/disbursement/v3';
+import {
+  DisbursementPayload,
+  SpecialDisbursementPayload,
   Disbursement,
-  DisbursementAgentQuery,
+  DisbursementListQuery,
   IdempotencyHeader,
-} from './type';
+} from '../utils/type';
 
 class FlipV3 {
   #flip: typeof Flip;
@@ -29,37 +34,20 @@ class FlipV3 {
   }
 
   public async createDisbursement(
-    payload: CreateDisbursementPayload,
+    payload: DisbursementPayload,
     header: IdempotencyHeader
   ) {
     const { data } = await axios.post<Disbursement>(
       `${this.baseUrl}/disbursement`,
-      {
-        account_number: payload.accountNumber,
-        amount: payload.amount,
-        bank_code: payload.bankCode,
-        remark: payload.remark,
-        recipient_city: payload.recipientCity,
-        beneficiary_email: payload.beneficiaryEmail
-          ? (Array.isArray(payload.beneficiaryEmail)
-              ? payload.beneficiaryEmail
-              : [payload.beneficiaryEmail]
-            ).join(',')
-          : undefined,
-      },
-      {
-        headers: {
-          'idempotency-key': header.idempotencyKey,
-          'X-TIMESTAMP': header.xTimestamp,
-        },
-      }
+      createDisbursementRequest(payload),
+      createIdempotencyKeyHeader(header)
     );
 
     return normalizeDisbursement(data);
   }
 
   public async getDisbursementList(
-    query: DisbursementAgentQuery = {},
+    query: DisbursementListQuery = {},
     attribute: [string, string][] = []
   ) {
     const { data } = await axios.get<{
@@ -106,43 +94,17 @@ class FlipV3 {
   }
 
   public async createSpecialDisbursement(
-    payload: CreateSpecialDisbursementPayload,
+    payload: SpecialDisbursementPayload,
     header: IdempotencyHeader
   ) {
     const { data } = await axios.post<Disbursement>(
       `${this.baseUrl}/special-disbursement`,
-      {
-        account_number: payload.accountNumber,
-        bank_code: payload.bankCode,
-        amount: payload.amount,
-        remark: payload.remark,
-        recipient_city: payload.recipientCity,
-        sender_country: payload.senderCountry,
-        sender_place_of_birth: payload.senderPlaceOfBirth,
-        sender_date_of_birth: payload.senderDateOfBirth,
-        sender_identity_type: payload.senderIdentityType,
-        sender_name: payload.senderName,
-        sender_address: payload.senderAddress,
-        sender_identity_number: payload.senderIdentityNumber,
-        sender_job: payload.senderJob,
-        direction: payload.direction,
-        beneficiary_email: payload.beneficiaryEmail
-          ? (Array.isArray(payload.beneficiaryEmail)
-              ? payload.beneficiaryEmail
-              : [payload.beneficiaryEmail]
-            ).join(',')
-          : undefined,
-      },
-      {
-        headers: {
-          'idempotency-key': header.idempotencyKey,
-          'X-TIMESTAMP': header.xTimestamp,
-        },
-      }
+      createSpecialDisbursementRequest(payload),
+      createIdempotencyKeyHeader(header)
     );
 
     return normalizeDisbursement(data);
   }
 }
 
-export = FlipV3;
+export default FlipV3;

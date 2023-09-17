@@ -1,6 +1,12 @@
-import type Flip from '.';
-import axios from './axios';
-import { normalizeDisbursement } from './common';
+import type Flip from '..';
+import axios from '../axios';
+import { createBillRequest, editBillRequest } from '../generator/payment/v2';
+import { normalizeBill, normalizeDisbursement } from '../utils/common';
+import { createIdempotencyKeyHeader } from '../generator/common';
+import {
+  createBankAccountInquiryRequest,
+  createDisbursementAgentRequest,
+} from '../generator/disbursement/v2';
 import {
   BankInquiryPayload,
   DisbursementAgentPayload,
@@ -10,7 +16,9 @@ import {
   BankInquiry,
   CityCountry,
   Disbursement,
-} from './type';
+  BillPayload,
+  Bill,
+} from '../utils/type';
 
 class FlipV2 {
   #flip: typeof Flip;
@@ -62,11 +70,7 @@ class FlipV2 {
   public async bankAccountInquiry(payload: BankInquiryPayload) {
     const { data } = await axios.post<BankInquiry>(
       `${this.baseUrl}/disbursement/bank-account-inquiry`,
-      {
-        account_number: payload.accountNumber,
-        bank_code: payload.bankCode,
-        inquiry_key: payload.inquiryKey,
-      }
+      createBankAccountInquiryRequest(payload)
     );
 
     return {
@@ -108,26 +112,8 @@ class FlipV2 {
   ) {
     const { data } = await axios.post<Disbursement>(
       `${this.baseUrl}/agent-disbursements`,
-      {
-        agent_id: payload.agentId,
-        account_number: payload.accountNumber,
-        amount: payload.amount,
-        bank_code: payload.bankCode,
-        direction: payload.direction,
-        remark: payload.remark,
-        beneficiary_email: payload.beneficiaryEmail
-          ? (Array.isArray(payload.beneficiaryEmail)
-              ? payload.beneficiaryEmail
-              : [payload.beneficiaryEmail]
-            ).join(',')
-          : undefined,
-      },
-      {
-        headers: {
-          'idempotency-key': header.idempotencyKey,
-          'X-TIMESTAMP': header.xTimestamp,
-        },
-      }
+      createDisbursementAgentRequest(payload),
+      createIdempotencyKeyHeader(header)
     );
 
     return normalizeDisbursement(data);
@@ -170,6 +156,36 @@ class FlipV2 {
       data: data.data.map(normalizeDisbursement),
     };
   }
+
+  public async createBill(payload: BillPayload) {
+    const { data } = await axios.post<Bill>(
+      `${this.baseUrl}/pwf/bill`,
+      createBillRequest(payload)
+    );
+
+    return normalizeBill(data);
+  }
+
+  public async editBill(billId: string, payload: BillPayload) {
+    const { data } = await axios.put<Bill>(
+      `${this.baseUrl}/pwf/${billId}bill`,
+      editBillRequest(payload)
+    );
+
+    return normalizeBill(data);
+  }
+
+  public async getBillById(billId: string) {
+    const { data } = await axios.get<Bill>(`${this.baseUrl}/pwf/${billId}bill`);
+
+    return normalizeBill(data);
+  }
+
+  public async getBillList() {
+    const { data } = await axios.get<Bill[]>(`${this.baseUrl}/pwf/bill`);
+
+    return data.map(normalizeBill);
+  }
 }
 
-export = FlipV2;
+export default FlipV2;
