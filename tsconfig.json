@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "lib": [],
+    "module": "CommonJS",
+    "target": "ESNext",
+    "moduleResolution": "Node",
+    "moduleDetection": "force",
+    "declaration": true,
+    "strict": true,
+    "downlevelIteration": true,
+    "skipLibCheck": true,
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": false,
+    "types": [
+      "bun-types" // add Bun global
+    ],
+    "outDir": "dist"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
