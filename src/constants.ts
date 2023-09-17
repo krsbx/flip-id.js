@@ -83,3 +83,9 @@ export const BANK_TYPE = {
   VIRTUAL_ACCOUNT: 'virtual_account',
   WALLET_ACCOUNT: 'wallet_account',
 } as const;
+
+export const CITY_COUNTRY_LIST_TYPE = {
+  CITY: 'city',
+  CITY_COUNTRY: 'city-country',
+  COUNTRY: 'country',
+} as const;
