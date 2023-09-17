@@ -72,4 +72,4 @@ class GeneralClass {
   }
 }
 
-export default GeneralClass;
+export = GeneralClass;

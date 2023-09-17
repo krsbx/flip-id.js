@@ -2,7 +2,7 @@ import axios from '../../axios';
 import type Flip from '../..';
 import { Bill, BillPayload, EditBillPayload } from '../../utils/type';
 import { createBillRequest, editBillRequest } from '../../generator/payment/v2';
-import { normalizeBill } from '../../utils/common';
+import { normalizeBill } from '../../utils/normalizer/payment';
 
 class BillClass {
   #flip: typeof Flip;
@@ -28,9 +28,9 @@ class BillClass {
     return normalizeBill(data);
   }
 
-  async edit(id: string, payload: EditBillPayload) {
+  async edit(billId: string, payload: EditBillPayload) {
     const { data } = await axios.put<Bill>(
-      `${this.#baseUrl}/pwf/${id}bill`,
+      `${this.#baseUrl}/pwf/${billId}bill`,
       editBillRequest(payload)
     );
 
@@ -41,8 +41,8 @@ class BillClass {
     const baseUrl = this.#baseUrl;
 
     return {
-      async byId(id: string) {
-        const { data } = await axios.get<Bill>(`${baseUrl}/pwf/${id}bill`);
+      async byId(billId: string) {
+        const { data } = await axios.get<Bill>(`${baseUrl}/pwf/${billId}bill`);
 
         return normalizeBill(data);
       },
@@ -55,4 +55,4 @@ class BillClass {
   }
 }
 
-export default BillClass;
+export = BillClass;

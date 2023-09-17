@@ -13,4 +13,4 @@ class FlipV3 {
   }
 }
 
-export default FlipV3;
+export = FlipV3;

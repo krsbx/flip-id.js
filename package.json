@@ -1,6 +1,7 @@
 {
   "name": "flip-id.js",
   "module": "dist/index.js",
+  "description": "Flip.id API Wrapper for Node.js",
   "author": {
     "name": "krsbx",
     "url": "https://github.com/krsbx"

@@ -260,3 +260,17 @@ export type ListResponse<T> = {
 
 export type CityCountryList =
   (typeof CITY_COUNTRY_LIST_TYPE)[keyof typeof CITY_COUNTRY_LIST_TYPE];
+
+export type PaymentListQuery = {
+  startDate?: string;
+  endDate?: string;
+  pagination?: number;
+  page?: number;
+  sortBy?: 'id' | 'bill_link' | 'bill_title' | 'amount' | 'created_at';
+  sortType?: 'asc' | 'desc';
+};
+
+export type ConfirmPayment = {
+  confirmed_at: string;
+  payment_url: string;
+};
