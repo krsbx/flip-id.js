@@ -3,6 +3,7 @@ import {
   BANK_TYPE,
   BILL_STATUS,
   BILL_TYPE,
+  CITY_COUNTRY_LIST_TYPE,
   CREATED_FROM,
   DISBURSEMENT_ORDER,
   DISBURSEMENT_REASON,
@@ -23,7 +24,7 @@ export type BankStatus = (typeof BANK_STATUS)[keyof typeof BANK_STATUS];
 export type BankInquiryPayload = {
   accountNumber: number;
   bankCode: string;
-  inquiryKey: string;
+  inquiryKey?: string;
 };
 
 export type InquiryStatus =
@@ -248,3 +249,14 @@ export type EditBillPayload = {
   isAddressRequired?: boolean;
   isPhoneNumberRequired?: boolean;
 };
+
+export type ListResponse<T> = {
+  total_data: number;
+  data_per_page: number;
+  total_page: number;
+  page: number;
+  data: T[];
+};
+
+export type CityCountryList =
+  (typeof CITY_COUNTRY_LIST_TYPE)[keyof typeof CITY_COUNTRY_LIST_TYPE];

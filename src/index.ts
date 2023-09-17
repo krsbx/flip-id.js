@@ -17,36 +17,36 @@ class Flip {
     this.#v3 = new FlipV3(this);
   }
 
-  public set secretKey(value: string) {
+  set secretKey(value: string) {
     this.#secretKey = value;
 
     const encoded = btoa(`${value}:`);
     instance.defaults.headers.Authorization = `Basic ${encoded}`;
   }
 
-  public get secretKey(): string | null {
+  get secretKey(): string | null {
     return this.#secretKey;
   }
 
-  public get toSendBox() {
+  get toSendBox() {
     return this.#toSendBox;
   }
 
-  public set toSendBox(value: boolean) {
+  set toSendBox(value: boolean) {
     this.#toSendBox = value;
   }
 
-  public static get instance() {
+  static get instance() {
     if (!Flip.#instance) Flip.#instance = new Flip();
 
     return Flip.#instance;
   }
 
-  public get v2() {
+  get v2() {
     return this.#v2;
   }
 
-  public get v3() {
+  get v3() {
     return this.#v3;
   }
 }
