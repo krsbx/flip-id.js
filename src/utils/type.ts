@@ -1,5 +1,8 @@
 import {
   BANK_STATUS,
+  BANK_TYPE,
+  BILL_STATUS,
+  BILL_TYPE,
   CREATED_FROM,
   DISBURSEMENT_ORDER,
   DISBURSEMENT_REASON,
@@ -7,8 +10,9 @@ import {
   FLIP_API_VERSION,
   IDENTITY_TYPE,
   INQUIRY_STATUS,
+  PAYMENT_STATUS,
   TRANSACTION_DIRECTION,
-} from './constants';
+} from '../constants';
 
 export type FlipApiVersion =
   | (typeof FLIP_API_VERSION)[keyof typeof FLIP_API_VERSION]
@@ -43,7 +47,7 @@ export type IdempotencyHeader = {
   xTimestamp: string;
 };
 
-export type CreateDisbursementPayload = {
+export type DisbursementPayload = {
   accountNumber: number;
   bankCode: string;
   amount: number;
@@ -57,7 +61,7 @@ export type DisbursementSortAsc =
 
 export type DisbursementSortDesc = `-${DisbursementSortAsc}`;
 
-export type DisbursementAgentQuery = {
+export type DisbursementListQuery = {
   pagination?: number;
   page?: number;
   sort?: DisbursementSortAsc | DisbursementSortDesc;
@@ -123,7 +127,7 @@ export type Disbursement = {
 
 export type IdentityType = (typeof IDENTITY_TYPE)[keyof typeof IDENTITY_TYPE];
 
-export type CreateSpecialDisbursementPayload = {
+export type SpecialDisbursementPayload = {
   accountNumber: number;
   bankCode: string;
   amount: number;
@@ -139,4 +143,108 @@ export type CreateSpecialDisbursementPayload = {
   senderJob: string;
   direction: TransactionDirection;
   beneficiaryEmail?: string | string[];
+};
+
+export type BillType = (typeof BILL_TYPE)[keyof typeof BILL_TYPE];
+
+export type BillStatus = (typeof BILL_STATUS)[keyof typeof BILL_STATUS];
+
+export type BaseBillPayload = {
+  title: string;
+  type: BillType;
+  amount: number;
+  expiredDate: string;
+  redirectUrl: string;
+  isAddressRequired?: boolean;
+  isPhoneNumberRequired?: boolean;
+};
+
+export type BillPayloadStep = BaseBillPayload & {
+  senderName: string;
+  senderEmail: string;
+  senderPhoneNumber: string;
+  senderAddress: string;
+};
+
+export type BillPayload =
+  | (BaseBillPayload & {
+      step: 1;
+    })
+  | (BillPayloadStep & {
+      step: 2;
+    })
+  | (BillPayloadStep & {
+      step: 3;
+      senderBank: string;
+      senderBankType: BankType;
+    });
+
+export type BaseBill = {
+  link_id: string;
+  link_url: string;
+  title: string;
+  type: BillType;
+  amount: number;
+  redirect_url: string;
+  expired_date: string;
+  created_from: CreatedFrom;
+  status: BillStatus;
+  is_address_required: number;
+  is_phone_number_required: number;
+};
+
+export type Customer = {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+};
+
+export type BillStep = BaseBill & {
+  customer: Customer;
+};
+
+export type PaymentStatus =
+  (typeof PAYMENT_STATUS)[keyof typeof PAYMENT_STATUS];
+
+export type BankType = (typeof BANK_TYPE)[keyof typeof BANK_TYPE];
+
+export type BankAccount = {
+  account_number: number;
+  account_type: BankType;
+  bank_code: string;
+  account_holder: string;
+};
+
+export type BillPayment = {
+  id: number;
+  amount: number;
+  unique_code: number;
+  status: PaymentStatus;
+  sender_bank: string;
+  sender_bank_type: BankType;
+  receiver_bank_account: BankAccount;
+  user_address: string;
+  user_phone: string;
+  created_at: string;
+};
+
+export type Bill =
+  | (BaseBill & { step: 1 })
+  | (BillStep & { step: 2 })
+  | (BillStep & {
+      step: 3;
+      bill_payment: BillPayment;
+      payment_url: string;
+    });
+
+export type EditBillPayload = {
+  title?: string;
+  type?: BillType;
+  amount?: number;
+  expiredDate?: string;
+  redirectUrl?: string;
+  status?: BillStatus;
+  isAddressRequired?: boolean;
+  isPhoneNumberRequired?: boolean;
 };

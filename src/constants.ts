@@ -58,3 +58,28 @@ export const IDENTITY_TYPE = {
   PASSPORT: 'passport',
   BANK_ACCOUNT: 'bank_acc',
 } as const;
+
+export const BILL_TYPE = {
+  SINGLE: 'SINGLE',
+  MULTIPLE: 'MULTIPLE',
+} as const;
+
+export const BILL_STATUS = {
+  NOT_CONFIRMED: 'NOT_CONFIRMED',
+  PENDING: 'PENDING',
+  PROCESSED: 'PROCESSED',
+  CANCELLED: 'CANCELLED',
+  FAILED: 'FAILED',
+  DONE: 'DONE',
+} as const;
+
+export const PAYMENT_STATUS = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+} as const;
+
+export const BANK_TYPE = {
+  BANK_ACCOUNT: 'bank_account',
+  VIRTUAL_ACCOUNT: 'virtual_account',
+  WALLET_ACCOUNT: 'wallet_account',
+} as const;
