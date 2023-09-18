@@ -1,5 +1,5 @@
 {
-  "name": "flip-id.js",
+  "name": "node-flip-id",
   "module": "dist/index.js",
   "description": "Flip.id API Wrapper for Node.js",
   "author": {
