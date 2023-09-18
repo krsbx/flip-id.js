@@ -23,27 +23,27 @@ class FlipV2 {
     this.#international = new InternationalClass(flip);
   }
 
-  get general() {
+  public get general() {
     return this.#general;
   }
 
-  get bill() {
+  public get bill() {
     return this.#bill;
   }
 
-  get disbursementAgent() {
+  public get disbursementAgent() {
     return this.#disbursementAgent;
   }
 
-  get payment() {
+  public get payment() {
     return this.#payment;
   }
 
-  get international() {
+  public get international() {
     return this.#international;
   }
 
-  get agent() {
+  public get agent() {
     return this.#agent;
   }
 }

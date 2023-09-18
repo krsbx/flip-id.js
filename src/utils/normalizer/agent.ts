@@ -1,3 +1,4 @@
+import { SupportingDocument } from '../type/v1';
 import { AgentIdentity, AgentIdentityById } from '../type/v2';
 
 export function normalizeAgentIdentity(data: AgentIdentity) {
@@ -50,4 +51,17 @@ export function normalizeAgentIdentityById(data: AgentIdentityById) {
     status: data.status,
     createdAt: data.created_at,
   };
+}
+
+export function normalizeSupportingDocument(document: SupportingDocument[]) {
+  return document.map((item) => {
+    return {
+      id: item.id,
+      type: item.type,
+      selfie: item.selfie,
+      path: item.path,
+      createdAt: item.created_at,
+      updatedAt: item.updated_at,
+    };
+  });
 }

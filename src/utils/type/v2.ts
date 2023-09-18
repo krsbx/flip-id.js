@@ -17,6 +17,7 @@ import {
   DisbursementSortAsc,
   DisbursementSortDesc,
   DisbursementStatus,
+  Gender,
 } from './common';
 
 export type CityCountryList =
@@ -62,7 +63,7 @@ export type AgentIdentityPayload = {
   cityId: number;
   districtId: number;
   address: string;
-  gender: string;
+  gender: Gender;
   occupation: Job;
   phoneNumber: string;
   useIdentityAddress?: boolean;
@@ -82,7 +83,7 @@ export type AgentIdentity = {
   identity_number: number;
   birth_date: string;
   birth_place: string;
-  gender: string;
+  gender: Gender;
   country_id: number;
   country_name: string;
   province_id: number;
@@ -338,7 +339,7 @@ export type Sender = {
   date_of_birth: string;
   address: string;
   identity_type: IdentityType;
-  identity_number: string;
+  identity_number: number;
   country: string;
   job: Job;
   city: string;
@@ -371,4 +372,77 @@ export type InternationalTransferListQuery = {
   pagination?: number;
   page?: number;
   sortBy?: string;
+};
+
+export type C2C_C2B_Payload = {
+  idNumber?: string;
+  idExpirationDate?: string;
+  amount: number;
+  sourceCountry: string;
+  destinationCountry: string;
+  transactionType: TransactionType;
+  beneficiaryFullName: string;
+  beneficiaryAccountNumber: number;
+  beneficiaryBankId: string;
+  beneficiaryBankName?: string;
+  beneficiaryEmail?: string;
+  beneficiaryMsisdn?: string;
+  beneficiaryNationality: string;
+  beneficiaryProvince: string;
+  beneficiaryCity: string;
+  beneficiaryAddress: string;
+  beneficiaryPostalCode?: string;
+  beneficiaryRelationship: string;
+  beneficiarySourceOfFunds: string;
+  beneficiaryRemittancePurposes: string;
+  beneficiaryIban?: string;
+  beneficiarySwiftBicCode?: string;
+  beneficiarySortCode?: string;
+  beneficiaryIfsCode?: string;
+  beneficiaryBsbNumber?: string;
+  beneficiaryBranchNumber?: string;
+  beneficiaryDocumentReferenceNumber?: string;
+  beneficiaryRegistrationNumber?: string;
+  beneficiaryRegion?: string;
+  senderName: string;
+  senderCountry: number;
+  senderPlaceOfBirth: string;
+  senderDateOfBirth: string;
+  senderAddress: string;
+  senderIdentityType: IdentityType;
+  senderIdentityNumber: number;
+  senderJob: Job;
+  senderEmail: string;
+  senderCity: string;
+  senderPhoneNumber: string;
+};
+
+export type B2C_B2B_Payload = {
+  destinationCountry: string;
+  sourceCountry: string;
+  transactionType: TransactionType;
+  amount: number;
+  attachmentData?: Blob;
+  attachmentType?: string;
+  beneficiaryAccountNumber: number;
+  beneficiaryAchCode?: string;
+  beneficiaryAddress: string;
+  beneficiaryBankId: string;
+  beneficiaryBankName: string;
+  beneficiaryBranchNumber?: string;
+  beneficiaryBsbNumber?: string;
+  beneficiaryCity?: string;
+  beneficiaryDocumentReferenceNumber?: string;
+  beneficiaryEmail?: string;
+  beneficiaryFullName?: string;
+  beneficiaryIban?: string;
+  beneficiaryIdExpirationDate?: string;
+  beneficiaryIfsCode?: string;
+  beneficiaryIdNumber?: string;
+  beneficiaryMsisdn?: string;
+  beneficiaryNationality: string;
+  beneficiaryPostalCode?: string;
+  beneficiaryRelationship?: string;
+  beneficiarySortCode?: string;
+  beneficiarySourceOfFunds?: string;
 };
