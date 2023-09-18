@@ -89,3 +89,32 @@ export const CITY_COUNTRY_LIST_TYPE = {
   CITY_COUNTRY: 'city-country',
   COUNTRY: 'country',
 } as const;
+
+export const CITY_DISTRICT_COUNTRY_LIST_TYPE = {
+  COUNTRY: 'countries',
+  PROVINCES: 'provinces',
+  CITY: 'cities',
+  DISTRICT: 'districts',
+} as const;
+
+export const TRANSACTION_TYPE = {
+  C2C: 'C2C',
+  C2B: 'C2B',
+  B2C: 'B2C',
+  B2B: 'B2B',
+} as const;
+
+export const PAYMENT_TYPE = {
+  REAL_TIME: 'Real Time',
+  SAME_DAY: 'Same Day',
+} as const;
+
+export const JOB = {
+  HOUSE_WIFE: 'housewife',
+  ENTERPRENEUR: 'entrepreneur',
+  PRIVATE_EMPLOYEE: 'private_employee',
+  GOVERNMENT_EMPLOYEE: 'government_employee',
+  FOUNDATION_BOARD: 'foundation_board',
+  INDONESIA_MIGRANT_WORKER: 'indonesia_migrant_worker',
+  OTHERS: 'others',
+} as const;
