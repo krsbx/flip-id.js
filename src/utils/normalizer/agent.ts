@@ -1,4 +1,4 @@
-import { AgentIdentity, AgentIdentityById } from '../type';
+import { AgentIdentity, AgentIdentityById } from '../type/v2';
 
 export function normalizeAgentIdentity(data: AgentIdentity) {
   return {

@@ -1,4 +1,4 @@
-import { AgentIdentityPayload } from '../../utils/type';
+import { AgentIdentityPayload } from '../../utils/type/v2';
 
 export function createAgentIdentityRequest(payload: AgentIdentityPayload) {
   return {

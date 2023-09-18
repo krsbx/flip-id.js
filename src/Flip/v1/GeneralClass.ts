@@ -1,66 +1,34 @@
-import { v4 as uuid } from 'uuid';
 import axios from '../../axios/v1';
 import type Flip from '../..';
-import { CityDistrictCountryList } from '../../utils/type';
-import { CITY_DISTRICT_COUNTRY_LIST_TYPE } from '../../constants';
+import { PlaceTypeList } from '../../utils/type/v1';
+import { PLACE_TYPE, PLACE_TYPE_PARAM } from '../../utils/constants/v1';
+import { normalizePlaceList } from '../../utils/normalizer/general';
+import BaseV1Class from './BaseClass';
 
-function getListUrl(type: CityDistrictCountryList, id: string = '') {
-  let idParam = '';
+function getListUrl(type: PlaceTypeList, id: string = '') {
+  const idParam = PLACE_TYPE_PARAM[type];
+  const isCountry = type === PLACE_TYPE.COUNTRY;
 
-  switch (type) {
-    case CITY_DISTRICT_COUNTRY_LIST_TYPE.DISTRICT:
-      idParam = 'city_id';
-      break;
-
-    case CITY_DISTRICT_COUNTRY_LIST_TYPE.CITY:
-      idParam = 'province_id';
-      break;
-
-    case CITY_DISTRICT_COUNTRY_LIST_TYPE.PROVINCES:
-      idParam = 'country_id';
-      break;
-  }
-
-  const queries = [
-    type !== CITY_DISTRICT_COUNTRY_LIST_TYPE.COUNTRY && `${idParam}=${id}`,
-    'user_type=1',
-  ]
+  const queries = [!isCountry && id && `${idParam}=${id}`, 'user_type=1']
     .filter((item) => item)
     .join('&');
 
   return `${type}?${queries}`;
 }
 
-class GeneralClass {
-  #flip: typeof Flip;
-
+class GeneralClass extends BaseV1Class {
   constructor(flip: typeof Flip) {
-    this.#flip = flip;
+    super(flip);
   }
 
-  get #baseUrl() {
-    if (this.#flip.toSendBox) {
-      return 'big_sandbox_api/v1';
-    }
-
-    return 'api/v1';
-  }
-
-  get get() {
-    const baseUrl = this.#baseUrl;
+  public get get() {
+    const { baseUrl } = this;
 
     return {
-      async list(type: CityDistrictCountryList, id: string = '') {
-        const { data } = await axios.get<{ id: number; name: string }[]>(
-          `${baseUrl}/${getListUrl(type, id)}`,
-          {
-            headers: {
-              'Request-ID': `bigflip-${uuid()}`,
-            },
-          }
-        );
+      async list<T extends PlaceTypeList>(type: T, id: string = '') {
+        const { data } = await axios.get(`${baseUrl}/${getListUrl(type, id)}`);
 
-        return data;
+        return normalizePlaceList<T>(type, data);
       },
     };
   }

@@ -4,48 +4,39 @@ import {
   AgentIdentity,
   AgentIdentityPayload,
   AgentIdentityById,
-} from '../../utils/type';
+} from '../../utils/type/v2';
 import { createAgentIdentityRequest } from '../../generator/agent/v2';
 import {
   normalizeAgentIdentity,
   normalizeAgentIdentityById,
 } from '../../utils/normalizer/agent';
+import BaseV2Class from './BaseClass';
 
-class AgentClass {
-  #flip: typeof Flip;
-
+class AgentClass extends BaseV2Class {
   constructor(flip: typeof Flip) {
-    this.#flip = flip;
+    super(flip);
   }
 
-  get #baseUrl() {
-    if (this.#flip.toSendBox) {
-      return 'big_sandbox_api/v2';
-    }
-
-    return 'api/v2';
-  }
-
-  async create(payload: AgentIdentityPayload) {
+  public async create(payload: AgentIdentityPayload) {
     const { data } = await axios.post<AgentIdentity>(
-      `${this.#baseUrl}/agents`,
+      `${this.baseUrl}/agents`,
       createAgentIdentityRequest(payload)
     );
 
     return normalizeAgentIdentity(data);
   }
 
-  async update(agentId: string, payload: AgentIdentityPayload) {
+  public async update(agentId: string, payload: AgentIdentityPayload) {
     const { data } = await axios.put<AgentIdentity>(
-      `${this.#baseUrl}/agents/${agentId}`,
+      `${this.baseUrl}/agents/${agentId}`,
       createAgentIdentityRequest(payload)
     );
 
     return normalizeAgentIdentity(data);
   }
 
-  get get() {
-    const baseUrl = this.#baseUrl;
+  public get get() {
+    const { baseUrl } = this;
 
     return {
       async byId(agentId: string) {

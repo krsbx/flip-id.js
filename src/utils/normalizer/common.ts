@@ -1,4 +1,4 @@
-import { ListResponse } from '../type';
+import { ListResponse } from '../type/common';
 
 export function normalizeBeneficiaryEmail(
   email: string | string[] | undefined

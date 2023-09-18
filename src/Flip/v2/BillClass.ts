@@ -1,44 +1,35 @@
 import axios from '../../axios';
 import type Flip from '../..';
-import { Bill, BillPayload, EditBillPayload } from '../../utils/type';
+import { Bill, BillPayload, EditBillPayload } from '../../utils/type/v2';
 import { createBillRequest, editBillRequest } from '../../generator/payment/v2';
 import { normalizeBill } from '../../utils/normalizer/payment';
+import BaseV2Class from './BaseClass';
 
-class BillClass {
-  #flip: typeof Flip;
-
+class BillClass extends BaseV2Class {
   constructor(flip: typeof Flip) {
-    this.#flip = flip;
+    super(flip);
   }
 
-  get #baseUrl() {
-    if (this.#flip.toSendBox) {
-      return 'big_sandbox_api/v2';
-    }
-
-    return 'api/v2';
-  }
-
-  async create(payload: BillPayload) {
+  public async create(payload: BillPayload) {
     const { data } = await axios.post<Bill>(
-      `${this.#baseUrl}/pwf/bill`,
+      `${this.baseUrl}/pwf/bill`,
       createBillRequest(payload)
     );
 
     return normalizeBill(data);
   }
 
-  async edit(billId: string, payload: EditBillPayload) {
+  public async edit(billId: string, payload: EditBillPayload) {
     const { data } = await axios.put<Bill>(
-      `${this.#baseUrl}/pwf/${billId}bill`,
+      `${this.baseUrl}/pwf/${billId}bill`,
       editBillRequest(payload)
     );
 
     return normalizeBill(data);
   }
 
-  get get() {
-    const baseUrl = this.#baseUrl;
+  public get get() {
+    const { baseUrl } = this;
 
     return {
       async byId(billId: string) {

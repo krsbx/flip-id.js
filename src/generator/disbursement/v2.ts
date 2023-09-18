@@ -1,5 +1,8 @@
 import { normalizeBeneficiaryEmail } from '../../utils/normalizer/common';
-import { BankInquiryPayload, DisbursementAgentPayload } from '../../utils/type';
+import {
+  BankInquiryPayload,
+  DisbursementAgentPayload,
+} from '../../utils/type/v2';
 
 export function createDisbursementAgentRequest(
   payload: DisbursementAgentPayload

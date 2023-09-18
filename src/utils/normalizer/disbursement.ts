@@ -1,4 +1,4 @@
-import { Disbursement } from '../type';
+import { Disbursement } from '../type/common';
 
 export function normalizeDisbursement(disbursement: Disbursement) {
   return {

@@ -1,14 +1,13 @@
 import axios from '../../axios';
 import type Flip from '../..';
+import { ListResponse, IdempotencyHeader } from '../../utils/type/common';
 import {
   ExchangeRate,
   InternationalFormData,
   InternationalTransfer,
-  ListResponse,
   TransactionType,
   InternationalTransferListQuery,
-  IdempotencyHeader,
-} from '../../utils/type';
+} from '../../utils/type/v2';
 import {
   normalizeExchangeRate,
   normalizeInternationalFormData,
@@ -16,6 +15,7 @@ import {
 } from '../../utils/normalizer/international';
 import { normalizeListResponse } from '../../utils/normalizer/common';
 import { createIdempotencyKeyHeader } from '../../generator/common';
+import BaseV2Class from './BaseClass';
 
 function getListQueries(query: InternationalTransferListQuery) {
   return [
@@ -27,23 +27,13 @@ function getListQueries(query: InternationalTransferListQuery) {
     .join('&');
 }
 
-class InternationalClass {
-  #flip: typeof Flip;
-
+class InternationalClass extends BaseV2Class {
   constructor(flip: typeof Flip) {
-    this.#flip = flip;
+    super(flip);
   }
 
-  get #baseUrl() {
-    if (this.#flip.toSendBox) {
-      return 'big_sandbox_api/v2';
-    }
-
-    return 'api/v2';
-  }
-
-  get create() {
-    const baseUrl = this.#baseUrl;
+  public get create() {
+    const { baseUrl } = this;
 
     return {
       get transfer() {
@@ -55,7 +45,7 @@ class InternationalClass {
               createIdempotencyKeyHeader(header)
             );
 
-            return data;
+            return normalizeInternationalTransfer(data);
           },
           async c2b(payload: unknown, header: IdempotencyHeader) {
             return this.c2c(payload, header);
@@ -67,7 +57,7 @@ class InternationalClass {
               createIdempotencyKeyHeader(header)
             );
 
-            return data;
+            return normalizeInternationalTransfer(data);
           },
           async b2b(payload: unknown, header: IdempotencyHeader) {
             return this.b2c(payload, header);
@@ -77,15 +67,15 @@ class InternationalClass {
     };
   }
 
-  get get() {
-    const baseUrl = this.#baseUrl;
+  public get get() {
+    const { baseUrl } = this;
 
     return {
       async exchangeRate(
         transactionType: TransactionType,
         countryCode: string = ''
       ) {
-        const { data } = await axios.get<ExchangeRate>(
+        const { data } = await axios.get<ExchangeRate[]>(
           `${baseUrl}/international-disbursement/exchange-rates?${[
             `transaction_type=${transactionType}`,
             countryCode && `country_iso_code=${countryCode}`,
@@ -94,7 +84,7 @@ class InternationalClass {
             .join('&')}`
         );
 
-        return normalizeExchangeRate(data);
+        return data.map(normalizeExchangeRate);
       },
       async formData(transactionType: TransactionType, countryCode: string) {
         const { data } = await axios.get<InternationalFormData>(
@@ -108,19 +98,23 @@ class InternationalClass {
 
         return normalizeInternationalFormData(data);
       },
-      async byId(transactionId: string) {
-        const { data } = await axios.get<InternationalTransfer>(
-          `${baseUrl}/international-disbursement/${transactionId}`
-        );
+      get transfer() {
+        return {
+          async byId(transactionId: string) {
+            const { data } = await axios.get<InternationalTransfer>(
+              `${baseUrl}/international-disbursement/${transactionId}`
+            );
 
-        return normalizeInternationalTransfer(data);
-      },
-      async list(query: InternationalTransferListQuery = {}) {
-        const { data } = await axios.get<ListResponse<InternationalTransfer>>(
-          `${baseUrl}/international-disbursement?${getListQueries(query)}`
-        );
+            return normalizeInternationalTransfer(data);
+          },
+          async list(query: InternationalTransferListQuery = {}) {
+            const { data } = await axios.get<
+              ListResponse<InternationalTransfer>
+            >(`${baseUrl}/international-disbursement?${getListQueries(query)}`);
 
-        return normalizeListResponse(data, normalizeInternationalTransfer);
+            return normalizeListResponse(data, normalizeInternationalTransfer);
+          },
+        };
       },
     };
   }

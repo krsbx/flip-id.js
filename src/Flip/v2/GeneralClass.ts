@@ -6,30 +6,21 @@ import {
   BankInquiryPayload,
   CityCountryList,
   CityCountry,
-} from '../../utils/type';
+} from '../../utils/type/v2';
 import {
   normalizeBankAccountInquiry,
   normalizeBankInfo,
 } from '../../utils/normalizer/general';
 import { createBankAccountInquiryRequest } from '../../generator/disbursement/v2';
+import BaseV2Class from './BaseClass';
 
-class GeneralClass {
-  #flip: typeof Flip;
-
+class GeneralClass extends BaseV2Class {
   constructor(flip: typeof Flip) {
-    this.#flip = flip;
+    super(flip);
   }
 
-  get #baseUrl() {
-    if (this.#flip.toSendBox) {
-      return 'big_sandbox_api/v2';
-    }
-
-    return 'api/v2';
-  }
-
-  get get() {
-    const baseUrl = this.#baseUrl;
+  public get get() {
+    const { baseUrl } = this;
 
     return {
       async balance() {

@@ -1,4 +1,4 @@
-import { IdempotencyHeader } from '../utils/type';
+import { IdempotencyHeader } from '../utils/type/common';
 
 export function createIdempotencyKeyHeader(header: IdempotencyHeader) {
   return {
