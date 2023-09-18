@@ -8,7 +8,7 @@ class FlipV3 {
     this.#disbursement = new DisbursementClass(flip);
   }
 
-  get disbursement() {
+  public get disbursement() {
     return this.#disbursement;
   }
 }

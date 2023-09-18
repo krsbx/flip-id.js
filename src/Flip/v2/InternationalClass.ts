@@ -7,6 +7,8 @@ import {
   InternationalTransfer,
   TransactionType,
   InternationalTransferListQuery,
+  C2C_C2B_Payload,
+  B2C_B2B_Payload,
 } from '../../utils/type/v2';
 import {
   normalizeExchangeRate,
@@ -16,6 +18,7 @@ import {
 import { normalizeListResponse } from '../../utils/normalizer/common';
 import { createIdempotencyKeyHeader } from '../../generator/common';
 import BaseV2Class from './BaseClass';
+import { createC2C_C2BRequest } from '../../generator/international/v2';
 
 function getListQueries(query: InternationalTransferListQuery) {
   return [
@@ -38,19 +41,19 @@ class InternationalClass extends BaseV2Class {
     return {
       get transfer() {
         return {
-          async c2c(payload: unknown, header: IdempotencyHeader) {
+          async c2c(payload: C2C_C2B_Payload, header: IdempotencyHeader) {
             const { data } = await axios.post<InternationalTransfer>(
               `${baseUrl}/international-disbursement`,
-              payload,
+              createC2C_C2BRequest(payload),
               createIdempotencyKeyHeader(header)
             );
 
             return normalizeInternationalTransfer(data);
           },
-          async c2b(payload: unknown, header: IdempotencyHeader) {
+          async c2b(payload: C2C_C2B_Payload, header: IdempotencyHeader) {
             return this.c2c(payload, header);
           },
-          async b2c(payload: unknown, header: IdempotencyHeader) {
+          async b2c(payload: B2C_B2B_Payload, header: IdempotencyHeader) {
             const { data } = await axios.post<InternationalTransfer>(
               `${baseUrl}/international-disbursement/create-with-attachment`,
               payload,
@@ -59,7 +62,7 @@ class InternationalClass extends BaseV2Class {
 
             return normalizeInternationalTransfer(data);
           },
-          async b2b(payload: unknown, header: IdempotencyHeader) {
+          async b2b(payload: B2C_B2B_Payload, header: IdempotencyHeader) {
             return this.b2c(payload, header);
           },
         };

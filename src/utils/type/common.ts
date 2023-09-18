@@ -4,10 +4,13 @@ import {
   IDENTITY_TYPE,
   JOB,
   TRANSACTION_DIRECTION,
+  GENDER,
 } from '../constants/common';
 import { DISBURSEMENT_REASON, DISBURSEMENT_STATUS } from '../constants/v3';
 
 export type Job = (typeof JOB)[keyof typeof JOB];
+
+export type Gender = (typeof GENDER)[keyof typeof GENDER];
 
 export type IdentityType = (typeof IDENTITY_TYPE)[keyof typeof IDENTITY_TYPE];
 

@@ -17,34 +17,38 @@ class AgentClass extends BaseV2Class {
     super(flip);
   }
 
-  public async create(payload: AgentIdentityPayload) {
-    const { data } = await axios.post<AgentIdentity>(
-      `${this.baseUrl}/agents`,
-      createAgentIdentityRequest(payload)
-    );
-
-    return normalizeAgentIdentity(data);
-  }
-
-  public async update(agentId: string, payload: AgentIdentityPayload) {
-    const { data } = await axios.put<AgentIdentity>(
-      `${this.baseUrl}/agents/${agentId}`,
-      createAgentIdentityRequest(payload)
-    );
-
-    return normalizeAgentIdentity(data);
-  }
-
-  public get get() {
+  public get identity() {
     const { baseUrl } = this;
 
     return {
-      async byId(agentId: string) {
-        const { data } = await axios.get<AgentIdentityById>(
-          `${baseUrl}/agents/${agentId}`
+      async create(payload: AgentIdentityPayload) {
+        const { data } = await axios.post<AgentIdentity>(
+          `${baseUrl}/agents`,
+          createAgentIdentityRequest(payload)
         );
 
-        return normalizeAgentIdentityById(data);
+        return normalizeAgentIdentity(data);
+      },
+
+      async update(agentId: number, payload: AgentIdentityPayload) {
+        const { data } = await axios.put<AgentIdentity>(
+          `${baseUrl}/agents/${agentId}`,
+          createAgentIdentityRequest(payload)
+        );
+
+        return normalizeAgentIdentity(data);
+      },
+
+      get get() {
+        return {
+          async byId(agentId: number) {
+            const { data } = await axios.get<AgentIdentityById>(
+              `${baseUrl}/agents/${agentId}`
+            );
+
+            return normalizeAgentIdentityById(data);
+          },
+        };
       },
     };
   }

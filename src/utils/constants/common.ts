@@ -32,3 +32,8 @@ export const DISBURSEMENT_ORDER = {
   AMOUNT: 'amount',
   STATUS: 'status',
 } as const;
+
+export const GENDER = {
+  MALE: 'male',
+  FEMALE: 'female',
+} as const;
