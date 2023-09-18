@@ -1,4 +1,4 @@
-import { Bill, BillPayment } from '../type';
+import { Bill, BillPayment } from '../type/v2';
 
 export function normalizeBillPayment(payment: BillPayment) {
   return {

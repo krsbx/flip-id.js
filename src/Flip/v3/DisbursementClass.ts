@@ -1,13 +1,12 @@
 import axios from '../../axios';
 import type Flip from '../..';
+import { Disbursement } from '../../utils/type/common';
 import {
-  Disbursement,
   DisbursementPayload,
   SpecialDisbursementPayload,
-  IdempotencyHeader,
   DisbursementListQuery,
-  ListResponse,
-} from '../../utils/type';
+} from '../../utils/type/v3';
+import { ListResponse, IdempotencyHeader } from '../../utils/type/common';
 import { normalizeDisbursement } from '../../utils/normalizer/disbursement';
 import {
   createDisbursementRequest,
@@ -15,6 +14,7 @@ import {
 } from '../../generator/disbursement/v3';
 import { createIdempotencyKeyHeader } from '../../generator/common';
 import { normalizeListResponse } from '../../utils/normalizer/common';
+import BaseV3Class from './BaseClass';
 
 async function getDisbursement(baseUrl: string, param: [string, string]) {
   const { data } = await axios.get<Disbursement>(
@@ -38,23 +38,13 @@ function getListQueries(
     .join('&');
 }
 
-class DisbursementClass {
-  #flip: typeof Flip;
-
+class DisbursementClass extends BaseV3Class {
   constructor(flip: typeof Flip) {
-    this.#flip = flip;
+    super(flip);
   }
 
-  get #baseUrl() {
-    if (this.#flip.toSendBox) {
-      return 'big_sandbox_api/v3';
-    }
-
-    return 'api/v3';
-  }
-
-  get create() {
-    const baseUrl = this.#baseUrl;
+  public get create() {
+    const { baseUrl } = this;
 
     return {
       async normal(payload: DisbursementPayload, header: IdempotencyHeader) {
@@ -81,8 +71,8 @@ class DisbursementClass {
     };
   }
 
-  get get() {
-    const baseUrl = this.#baseUrl;
+  public get get() {
+    const { baseUrl } = this;
 
     return {
       async byId(id: string) {

@@ -1,13 +1,14 @@
 import axios from '../../axios';
 import type Flip from '../..';
+import { ListResponse } from '../../utils/type/common';
 import {
-  ListResponse,
   BillPayment,
   PaymentListQuery,
   ConfirmPayment,
-} from '../../utils/type';
+} from '../../utils/type/v2';
 import { normalizeListResponse } from '../../utils/normalizer/common';
 import { normalizeBillPayment } from '../../utils/normalizer/payment';
+import BaseV2Class from './BaseClass';
 
 function getByIdQueries(query: PaymentListQuery) {
   return [
@@ -22,23 +23,13 @@ function getByIdQueries(query: PaymentListQuery) {
     .join('&');
 }
 
-class PaymentClass {
-  #flip: typeof Flip;
-
+class PaymentClass extends BaseV2Class {
   constructor(flip: typeof Flip) {
-    this.#flip = flip;
+    super(flip);
   }
 
-  get #baseUrl() {
-    if (this.#flip.toSendBox) {
-      return 'big_sandbox_api/v2';
-    }
-
-    return 'api/v2';
-  }
-
-  get get() {
-    const baseUrl = this.#baseUrl;
+  public get get() {
+    const { baseUrl } = this;
 
     return {
       async byId(billId: string, query: PaymentListQuery = {}) {
@@ -60,7 +51,7 @@ class PaymentClass {
 
   async confirm(transactionId: string) {
     const { data } = await axios.put<ConfirmPayment>(
-      `${this.#baseUrl}/pwf/bill-payment/${transactionId}/confirm`
+      `${this.baseUrl}/pwf/bill-payment/${transactionId}/confirm`
     );
 
     return data;

@@ -1,16 +1,16 @@
 import axios from '../../axios';
 import type Flip from '../..';
+import { Disbursement } from '../../utils/type/common';
 import {
-  Disbursement,
   DisbursementAgentPayload,
   DisbursementAgentListQuery,
-  IdempotencyHeader,
-  ListResponse,
-} from '../../utils/type';
+} from '../../utils/type/v2';
+import { IdempotencyHeader, ListResponse } from '../../utils/type/common';
 import { createDisbursementAgentRequest } from '../../generator/disbursement/v2';
 import { createIdempotencyKeyHeader } from '../../generator/common';
 import { normalizeDisbursement } from '../../utils/common';
 import { normalizeListResponse } from '../../utils/normalizer/common';
+import BaseV2Class from './BaseClass';
 
 function getListQueries(query: DisbursementAgentListQuery) {
   [
@@ -23,24 +23,17 @@ function getListQueries(query: DisbursementAgentListQuery) {
     .join('&');
 }
 
-class DisbursementAgentClass {
-  #flip: typeof Flip;
-
+class DisbursementAgentClass extends BaseV2Class {
   constructor(flip: typeof Flip) {
-    this.#flip = flip;
+    super(flip);
   }
 
-  get #baseUrl() {
-    if (this.#flip.toSendBox) {
-      return 'big_sandbox_api/v2';
-    }
-
-    return 'api/v2';
-  }
-
-  async create(payload: DisbursementAgentPayload, header: IdempotencyHeader) {
+  public async create(
+    payload: DisbursementAgentPayload,
+    header: IdempotencyHeader
+  ) {
     const { data } = await axios.post<Disbursement>(
-      `${this.#baseUrl}/agent-disbursements`,
+      `${this.baseUrl}/agent-disbursements`,
       createDisbursementAgentRequest(payload),
       createIdempotencyKeyHeader(header)
     );
@@ -48,8 +41,8 @@ class DisbursementAgentClass {
     return normalizeDisbursement(data);
   }
 
-  get get() {
-    const baseUrl = this.#baseUrl;
+  public get get() {
+    const { baseUrl } = this;
 
     return {
       async byId(transactionId: string) {

@@ -2,7 +2,7 @@ import { normalizeBeneficiaryEmail } from '../../utils/normalizer/common';
 import {
   DisbursementPayload,
   SpecialDisbursementPayload,
-} from '../../utils/type';
+} from '../../utils/type/v3';
 
 export function createDisbursementRequest(payload: DisbursementPayload) {
   return {

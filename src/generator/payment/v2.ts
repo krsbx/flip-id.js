@@ -1,4 +1,4 @@
-import { BillPayload, EditBillPayload } from '../../utils/type';
+import { BillPayload, EditBillPayload } from '../../utils/type/v2';
 
 export function createBillRequest(payload: BillPayload) {
   return {

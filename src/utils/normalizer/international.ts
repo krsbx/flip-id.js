@@ -5,7 +5,7 @@ import {
   InternationalTransfer,
   NationalityCountry,
   Sender,
-} from '../type';
+} from '../type/v2';
 
 export function normalizeExchangeRate(exchangeRate: ExchangeRate) {
   return {
