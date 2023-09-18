@@ -7,44 +7,44 @@ import InternationalClass from './v2/InternationalClass';
 import AgentClass from './v2/AgentClass';
 
 class FlipV2 {
-  #general: GeneralClass;
-  #bill: BillClass;
-  #agent: AgentClass;
-  #disbursementAgent: DisbursementAgentClass;
-  #payment: PaymentClass;
-  #international: InternationalClass;
+  private $general: GeneralClass;
+  private $bill: BillClass;
+  private $agent: AgentClass;
+  private $disbursementAgent: DisbursementAgentClass;
+  private $payment: PaymentClass;
+  private $international: InternationalClass;
 
   constructor(flip: typeof Flip) {
-    this.#general = new GeneralClass(flip);
-    this.#agent = new AgentClass(flip);
-    this.#bill = new BillClass(flip);
-    this.#disbursementAgent = new DisbursementAgentClass(flip);
-    this.#payment = new PaymentClass(flip);
-    this.#international = new InternationalClass(flip);
+    this.$general = new GeneralClass(flip);
+    this.$agent = new AgentClass(flip);
+    this.$bill = new BillClass(flip);
+    this.$disbursementAgent = new DisbursementAgentClass(flip);
+    this.$payment = new PaymentClass(flip);
+    this.$international = new InternationalClass(flip);
   }
 
   public get general() {
-    return this.#general;
+    return this.$general;
   }
 
   public get bill() {
-    return this.#bill;
+    return this.$bill;
   }
 
   public get disbursementAgent() {
-    return this.#disbursementAgent;
+    return this.$disbursementAgent;
   }
 
   public get payment() {
-    return this.#payment;
+    return this.$payment;
   }
 
   public get international() {
-    return this.#international;
+    return this.$international;
   }
 
   public get agent() {
-    return this.#agent;
+    return this.$agent;
   }
 }
 
