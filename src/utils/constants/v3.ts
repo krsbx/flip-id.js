@@ -1,7 +1,7 @@
 export const DISBURSEMENT_STATUS = {
   PENDING: 'PENDING',
   CANCELLED: 'CANCELLED',
-  FAILED: 'FAILED',
+  DONE: 'DONE',
 } as const;
 
 export const DISBURSEMENT_REASON = {

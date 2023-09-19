@@ -6,7 +6,7 @@ import {
 } from './common';
 
 export type DisbursementPayload = {
-  accountNumber: number;
+  accountNumber: string;
   bankCode: string;
   amount: number;
   remark?: string;
@@ -15,7 +15,7 @@ export type DisbursementPayload = {
 };
 
 export type SpecialDisbursementPayload = {
-  accountNumber: number;
+  accountNumber: string;
   bankCode: string;
   amount: number;
   remark?: string;

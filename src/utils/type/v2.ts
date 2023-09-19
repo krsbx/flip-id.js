@@ -6,6 +6,7 @@ import {
   CITY_COUNTRY_LIST_TYPE,
   INQUIRY_STATUS,
   PAYMENT_STATUS,
+  BILL_PAYMENT_STATUS,
   PAYMENT_TYPE,
   TRANSACTION_TYPE,
 } from '../constants/v2';
@@ -29,7 +30,7 @@ export type InquiryStatus =
   (typeof INQUIRY_STATUS)[keyof typeof INQUIRY_STATUS];
 
 export type BankInquiryPayload = {
-  accountNumber: number;
+  accountNumber: string;
   bankCode: string;
   inquiryKey?: string;
 };
@@ -44,7 +45,7 @@ export type BankInfo = {
 
 export type BankInquiry = {
   bank_code: string;
-  account_number: number;
+  account_number: string;
   account_holder: string;
   status: InquiryStatus;
   inquiry_key: string;
@@ -55,7 +56,7 @@ export type CityCountry = Record<string, string>;
 export type AgentIdentityPayload = {
   name: string;
   identityType: IdentityType;
-  identityNumber: number;
+  identityNumber: string;
   birthDate: string;
   birthPlace: string;
   countryId: number;
@@ -80,7 +81,7 @@ export type AgentIdentity = {
   company_id: number;
   name: string;
   identity_type: IdentityType;
-  identity_number: number;
+  identity_number: string;
   birth_date: string;
   birth_place: string;
   gender: Gender;
@@ -132,22 +133,44 @@ export type BillStatus = (typeof BILL_STATUS)[keyof typeof BILL_STATUS];
 export type BaseBillPayload = {
   title: string;
   type: BillType;
-  amount: number;
-  expiredDate: string;
-  redirectUrl: string;
-  isAddressRequired?: boolean;
-  isPhoneNumberRequired?: boolean;
+  expiredDate?: string;
+  redirectUrl?: string;
 };
 
-export type BillPayloadStep = BaseBillPayload & {
-  senderName: string;
-  senderEmail: string;
-  senderPhoneNumber: string;
-  senderAddress: string;
-};
+export type BillPayloadPhone =
+  | {
+      isPhoneNumberRequired: true;
+      senderPhoneNumber: string;
+    }
+  | {
+      isPhoneNumberRequired: false;
+      senderPhoneNumber?: string;
+    };
+
+export type BillPayloadAddress =
+  | {
+      isAddressRequired: true;
+      senderAddress: string;
+    }
+  | {
+      isAddressRequired: false;
+      senderAddress?: string;
+    };
+
+export type BillPayloadPhoneAddress = BillPayloadPhone & BillPayloadAddress;
+
+export type BillPayloadStep =
+  | BaseBillPayload & {
+      amount: number;
+      senderName: string;
+      senderEmail: string;
+    } & BillPayloadPhoneAddress;
 
 export type BillPayload =
   | (BaseBillPayload & {
+      isAddressRequired?: boolean;
+      isPhoneNumberRequired?: boolean;
+      amount?: number;
       step: 1;
     })
   | (BillPayloadStep & {
@@ -187,10 +210,13 @@ export type BillStep = BaseBill & {
 export type PaymentStatus =
   (typeof PAYMENT_STATUS)[keyof typeof PAYMENT_STATUS];
 
+export type BillPaymentStatus =
+  (typeof BILL_PAYMENT_STATUS)[keyof typeof BILL_PAYMENT_STATUS];
+
 export type BankType = (typeof BANK_TYPE)[keyof typeof BANK_TYPE];
 
 export type BankAccount = {
-  account_number: number;
+  account_number: string;
   account_type: BankType;
   bank_code: string;
   account_holder: string;
@@ -200,7 +226,7 @@ export type BillPayment = {
   id: number;
   amount: number;
   unique_code: number;
-  status: PaymentStatus;
+  status: BillPaymentStatus;
   sender_bank: string;
   sender_bank_type: BankType;
   receiver_bank_account: BankAccount;
@@ -231,7 +257,7 @@ export type EditBillPayload = {
 
 export type DisbursementAgentPayload = {
   agentId: number;
-  accountNumber: number;
+  accountNumber: string;
   amount: number;
   bankCode: string;
   direction: TransactionDirection;
@@ -307,13 +333,13 @@ export type InternationalFormData = {
 };
 
 export type Beneficiary = {
-  id_number: number;
+  id_number: string;
   id_expiration_date: string;
   full_name: string;
-  bank_account_number: number;
+  bank_account_number: string;
   bank: string;
   email: string;
-  msisdn: number;
+  msisdn: string;
   nationality: string;
   country: string;
   province: string;
@@ -327,10 +353,10 @@ export type Beneficiary = {
   swift_bic_code: string;
   sort_code: string;
   ifs_code: string;
-  bsb_number: number;
-  branch_number: number;
-  document_reference_number: number;
-  registration_number: number;
+  bsb_number: string;
+  branch_number: string;
+  document_reference_number: string;
+  registration_number: string;
 };
 
 export type Sender = {
@@ -339,7 +365,7 @@ export type Sender = {
   date_of_birth: string;
   address: string;
   identity_type: IdentityType;
-  identity_number: number;
+  identity_number: string;
   country: string;
   job: Job;
   city: string;
@@ -382,7 +408,7 @@ export type C2C_C2B_Payload = {
   destinationCountry: string;
   transactionType: TransactionType;
   beneficiaryFullName: string;
-  beneficiaryAccountNumber: number;
+  beneficiaryAccountNumber: string;
   beneficiaryBankId: string;
   beneficiaryBankName?: string;
   beneficiaryEmail?: string;
@@ -410,7 +436,7 @@ export type C2C_C2B_Payload = {
   senderDateOfBirth: string;
   senderAddress: string;
   senderIdentityType: IdentityType;
-  senderIdentityNumber: number;
+  senderidentityNumber: string;
   senderJob: Job;
   senderEmail: string;
   senderCity: string;
@@ -424,7 +450,7 @@ export type B2C_B2B_Payload = {
   amount: number;
   attachmentData?: Blob;
   attachmentType?: string;
-  beneficiaryAccountNumber: number;
+  beneficiaryAccountNumber: string;
   beneficiaryAchCode?: string;
   beneficiaryAddress: string;
   beneficiaryBankId: string;
