@@ -3,7 +3,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "description": "Flip.id API Wrapper for Node.js",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "files": ["dist", "src", "README.md", "LICENSE"],
   "author": {
     "name": "krsbx",
@@ -11,7 +11,7 @@
   },
   "type": "commonjs",
   "scripts": {
-    "prebuild": "bun run clean",
+    "prebuild": "npm run clean",
     "clean": "rimraf dist",
     "build": "tsc"
   },

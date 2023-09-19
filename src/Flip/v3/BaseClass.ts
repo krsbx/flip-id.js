@@ -1,14 +1,14 @@
 import type Flip from '../..';
 
 class BaseV3Class {
-  private $flip: typeof Flip;
+  #flip: typeof Flip;
 
   constructor(flip: typeof Flip) {
-    this.$flip = flip;
+    this.#flip = flip;
   }
 
   protected get baseUrl() {
-    if (this.$flip.toSendBox) {
+    if (this.#flip.toSendBox) {
       return 'big_sandbox_api/v3';
     }
 
