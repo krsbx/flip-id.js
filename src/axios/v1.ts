@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { v4 as uuid } from 'uuid';
+import { randomUUID } from 'crypto';
 
 const instance = axios.create({
   baseURL: 'https://api.flip.id',
@@ -7,7 +7,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use((config) => {
   config.headers['Content-Type'] = 'multipart/form-data';
-  config.headers['Request-ID'] = `bigflip-${uuid()}`;
+  config.headers['Request-ID'] = `bigflip-${randomUUID()}`;
 
   return config;
 });
