@@ -4,26 +4,26 @@ import GeneralClass from './v1/GeneralClass';
 import AgentClass from './v2/AgentClass';
 
 class FlipV1 {
-  private $general: GeneralClass;
-  private $agent: AgentClass;
-  private $repair: RepairClass;
+  #general: GeneralClass;
+  #agent: AgentClass;
+  #repair: RepairClass;
 
   constructor(flip: typeof Flip) {
-    this.$general = new GeneralClass(flip);
-    this.$agent = new AgentClass(flip);
-    this.$repair = new RepairClass(flip);
+    this.#general = new GeneralClass(flip);
+    this.#agent = new AgentClass(flip);
+    this.#repair = new RepairClass(flip);
   }
 
   public get general() {
-    return this.$general;
+    return this.#general;
   }
 
   public get agent() {
-    return this.$agent;
+    return this.#agent;
   }
 
   public get repair() {
-    return this.$repair;
+    return this.#repair;
   }
 }
 
