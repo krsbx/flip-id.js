@@ -8,7 +8,7 @@ import {
 import { IdempotencyHeader, ListResponse } from '../../utils/type/common';
 import { createDisbursementAgentRequest } from '../../generator/disbursement/v2';
 import { createIdempotencyKeyHeader } from '../../generator/common';
-import { normalizeDisbursement } from '../../utils/common';
+import { normalizeDisbursement } from '../../utils/normalizer/disbursement';
 import { normalizeListResponse } from '../../utils/normalizer/common';
 import BaseV2Class from './BaseClass';
 

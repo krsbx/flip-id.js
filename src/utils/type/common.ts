@@ -43,15 +43,26 @@ export type IdempotencyHeader = {
   xTimestamp: string;
 };
 
+export type DisbursementSender = {
+  sender_name: string;
+  place_of_birth: number;
+  date_of_birth: string;
+  address: string;
+  sender_identity_type: IdentityType;
+  sender_identity_number: string;
+  sender_country: string;
+  job: Job;
+};
+
 export type Disbursement = {
   id: number;
-  userId: number;
+  user_id: number;
   amount: number;
   status: DisbursementStatus;
   reason: DisbursementReason;
   timestamp: string;
   bank_code: string;
-  account_number: number;
+  account_number: string;
   recipient_name: string;
   sender_bank: string;
   remark: string;
@@ -62,7 +73,7 @@ export type Disbursement = {
   recipient_city: number;
   created_from: CreatedFrom;
   direction: TransactionDirection;
-  sender: null | object;
+  sender: DisbursementSender | null;
   fee: number;
   beneficiary_email: string;
   idempotency_key: string;

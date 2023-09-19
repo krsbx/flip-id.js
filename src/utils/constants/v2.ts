@@ -41,6 +41,12 @@ export const BILL_STATUS = {
 } as const;
 
 export const PAYMENT_STATUS = {
+  FAILED: 'FAILED',
+  SUCCESSFUL: 'SUCCESSFUL',
+  PENDING: 'PENDING',
+} as const;
+
+export const BILL_PAYMENT_STATUS = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE',
 } as const;
