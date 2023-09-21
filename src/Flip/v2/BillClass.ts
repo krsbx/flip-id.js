@@ -19,7 +19,7 @@ class BillClass extends BaseV2Class {
     return normalizeBill(data);
   }
 
-  public async edit(billId: number, payload: EditBillPayload) {
+  public async edit(billId: string, payload: EditBillPayload) {
     const { data } = await axios.put<Bill>(
       `${this.baseUrl}/pwf/${billId}bill`,
       editBillRequest(payload)
@@ -32,7 +32,7 @@ class BillClass extends BaseV2Class {
     const { baseUrl } = this;
 
     return {
-      async byId(billId: number) {
+      async byId(billId: string) {
         const { data } = await axios.get<Bill>(`${baseUrl}/pwf/${billId}bill`);
 
         return normalizeBill(data);

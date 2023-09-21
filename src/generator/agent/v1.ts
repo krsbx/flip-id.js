@@ -17,7 +17,7 @@ export function uploadIdentityImageRequest(payload: AgentIdentityImagePayload) {
 }
 
 export function uploadSupportingDocumentRequest(
-  agentId: number,
+  agentId: string,
   payload: SupportingDocumentPayload
 ) {
   const formData = new FormData();

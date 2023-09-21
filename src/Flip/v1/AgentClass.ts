@@ -21,7 +21,7 @@ class AgentClass extends BaseV1Class {
     const { baseUrl } = this;
 
     return {
-      async identityImage(agentId: number, payload: AgentIdentityImagePayload) {
+      async identityImage(agentId: string, payload: AgentIdentityImagePayload) {
         const { data } = await axios.put<{ image_url: string }>(
           `${baseUrl}/users/${agentId}/identities`,
           uploadIdentityImageRequest(payload)
@@ -32,7 +32,7 @@ class AgentClass extends BaseV1Class {
         };
       },
       async supportingDocument(
-        agentId: number,
+        agentId: string,
         payload: SupportingDocumentPayload
       ) {
         const { data } = await axios.put<SupportingDocument[]>(
@@ -49,7 +49,7 @@ class AgentClass extends BaseV1Class {
     const { baseUrl } = this;
 
     return {
-      async submit(agentId: number) {
+      async submit(agentId: string) {
         const { data } = await axios.put<{ message: string }>(
           `${baseUrl}/users/${agentId}/submit`,
           {

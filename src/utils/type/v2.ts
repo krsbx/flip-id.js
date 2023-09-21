@@ -256,7 +256,7 @@ export type EditBillPayload = {
 };
 
 export type DisbursementAgentPayload = {
-  agentId: number;
+  agentId: string;
   accountNumber: string;
   amount: number;
   bankCode: string;
@@ -266,7 +266,7 @@ export type DisbursementAgentPayload = {
 };
 
 export type DisbursementAgentListQuery = {
-  agentId?: number;
+  agentId?: string;
   pagination?: number;
   page?: number;
   sort?: DisbursementSortAsc | DisbursementSortDesc;
