@@ -1,5 +1,5 @@
 import { PLACE_TYPE } from '../constants/v1';
-import { IdentityType, Job } from './common';
+import { Job } from './common';
 
 export type PlaceTypeList = (typeof PLACE_TYPE)[keyof typeof PLACE_TYPE];
 
@@ -59,7 +59,7 @@ export type AgentIdentityImagePayload = {
 };
 
 export type SupportingDocumentPayload = {
-  userId: number;
+  userId: string;
   studentCard?: Blob;
   studentCardSelfie?: Blob;
   employeeCard?: Blob;
@@ -79,7 +79,7 @@ export type SupportingDocumentPayload = {
 };
 
 export type SupportingDocument = {
-  id: number;
+  id: string;
   type: number;
   selfie: boolean;
   path: string;

@@ -30,7 +30,7 @@ class AgentClass extends BaseV2Class {
         return normalizeAgentIdentity(data);
       },
 
-      async update(agentId: number, payload: AgentIdentityPayload) {
+      async update(agentId: string, payload: AgentIdentityPayload) {
         const { data } = await axios.put<AgentIdentity>(
           `${baseUrl}/agents/${agentId}`,
           createAgentIdentityRequest(payload)
@@ -41,7 +41,7 @@ class AgentClass extends BaseV2Class {
 
       get get() {
         return {
-          async byId(agentId: number) {
+          async byId(agentId: string) {
             const { data } = await axios.get<AgentIdentityById>(
               `${baseUrl}/agents/${agentId}`
             );

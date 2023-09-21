@@ -27,7 +27,7 @@ class RepairClass extends BaseV1Class {
     const { baseUrl } = this;
 
     return {
-      async data(agentId: number, payload: RepairDataPayload) {
+      async data(agentId: string, payload: RepairDataPayload) {
         const { data } = await axios.put<AgentIdentity>(
           `${baseUrl}/users/${agentId}/repair`,
           repairAgentIdentityRequest(payload)
@@ -36,11 +36,11 @@ class RepairClass extends BaseV1Class {
         return normalizeAgentIdentity(data);
       },
 
-      async identityImage(agentId: number, payload: Blob) {
+      async identityImage(agentId: string, payload: Blob) {
         return repairImage(`${baseUrl}/users/${agentId}/repairPhoto`, payload);
       },
 
-      async identitySelfieImage(agentId: number, payload: Blob) {
+      async identitySelfieImage(agentId: string, payload: Blob) {
         return repairImage(`${baseUrl}/users/${agentId}/repairSelfie`, payload);
       },
     };

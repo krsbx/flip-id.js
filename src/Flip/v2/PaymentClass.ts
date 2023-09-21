@@ -32,7 +32,7 @@ class PaymentClass extends BaseV2Class {
     const { baseUrl } = this;
 
     return {
-      async byId(billId: number, query: PaymentListQuery = {}) {
+      async byId(billId: string, query: PaymentListQuery = {}) {
         const { data } = await axios.get<ListResponse<BillPayment>>(
           `${baseUrl}/pwf/${billId}/payment?${getByIdQueries(query)}`
         );
